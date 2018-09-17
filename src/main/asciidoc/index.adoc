@@ -1,0 +1,19 @@
+= Calculator API Documentation
+
+== Introduction
+This is an example of Spring REST Docs generated documentation.
+
+== Persons API
+Collection of API endpoints used to perform arthimetic operation.
+
+=== ADD two numbers
+Adding to number and getting response like 'a + b = c'
+
+==== Sample Request
+include::{snippets}/CalculatorApplicationTest/testSuccessCalculator/http-request.adoc[]
+
+==== Sample Response
+include::{snippets}/CalculatorApplicationTest/testSuccessCalculator/http-response.adoc[]
+
+==== CURL sample
+include::{snippets}/CalculatorApplicationTest/testSuccessCalculator/curl-request.adoc[]
