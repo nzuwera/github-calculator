@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = CalculatorApplication.class)
 public class CalculatorApplicationTest {
 
     @Rule
@@ -45,7 +45,7 @@ public class CalculatorApplicationTest {
 
     @Test
     public void contextLoads() {
-        // For testing SpringBootApplication main method
+        CalculatorApplication.main(new String[] {});
     }
 
     @Test
