@@ -141,24 +141,17 @@
                 <executions>
                     <execution>
                         <id>build-image</id>
-                        <phase>package</phase>
                         <goals>
                             <goal>build</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>push-image</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>push</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
                     <repository>${docker.image.prefix}/${project.artifactId}</repository>
                     <tag>${project.version}</tag>
+                    <pullNewerImage>false</pullNewerImage>
                     <buildArgs>
-                        <JAR_FILE>${project.build.directory}/${project.build.finalName}-${project.version}.jar</JAR_FILE>
+                        <jar_file>${project.build.directory}/${project.build.finalName}-${project.version}.jar</jar_file>
                     </buildArgs>
                 </configuration>
             </plugin>
