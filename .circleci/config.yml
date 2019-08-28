@@ -40,6 +40,9 @@ jobs:
       # run tests!
       - run: mvn integration-test
 
+      # run Jacoco test coverage
+      - run: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent test --fail-at-end -DskipTests=false -am
+
       # Analyse with SonarCloud
       - run: mvn sonar:sonar -Dsonar.projectKey=nzuwera_github-calculator -Dsonar.organization=nzuwera -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=44df6fc9e7d0bbd08e10d6f356fb8db707158868
 
