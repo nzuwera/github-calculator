@@ -45,7 +45,7 @@ public class CalculatorApplicationTest {
 
     @Test
     public void contextLoads() {
-        CalculatorApplication.main(new String[] {});
+        CalculatorApplication.main(new String[]{});
     }
 
     @Test
@@ -68,11 +68,43 @@ public class CalculatorApplicationTest {
     }
 
     @Test
-    public void testSuccessCalculatorService() {
+    public void testSuccessCalculatorAdditionService() {
         int a = 6;
         int b = 3;
         String response = calculator.run(ICalculator.operations.ADD, a, b);
         Assert.assertEquals(String.format("%d + %d = %s", a, b, a + b), response);
+    }
+
+    @Test
+    public void testSuccessCalculatorSubstractionService() {
+        int a = 6;
+        int b = 3;
+        String response = calculator.run(ICalculator.operations.SUBSTRACT, a, b);
+        Assert.assertEquals(String.format("%d - %d = %s", a, b, a - b), response);
+    }
+
+    @Test
+    public void testSuccessCalculatorDivisionService() {
+        int a = 6;
+        int b = 3;
+        String response = calculator.run(ICalculator.operations.DIVIDE, a, b);
+        Assert.assertEquals(String.format("%d / %d = %s", a, b, a / b), response);
+    }
+
+    @Test
+    public void testSuccessCalculatorMultiplicationService() {
+        int a = 6;
+        int b = 3;
+        String response = calculator.run(ICalculator.operations.MULTIPLY, a, b);
+        Assert.assertEquals(String.format("%d * %d = %s", a, b, a * b), response);
+    }
+
+    @Test(expected = Exception.class)
+    public void testSuccessCalculatorUnknownOperator() {
+        int a = 6;
+        int b = 3;
+        String operator = "ADDED";
+        calculator.run(ICalculator.operations.valueOf(operator.toUpperCase()), a, b);
     }
 
     @Test
