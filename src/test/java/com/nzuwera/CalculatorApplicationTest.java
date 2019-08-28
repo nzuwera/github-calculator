@@ -67,6 +67,13 @@ public class CalculatorApplicationTest {
                 .andExpect(content().contentType("text/plain;charset=UTF-8"));
     }
 
+    @Test
+    public void testSuccessCalculatorService() {
+        int a = 6;
+        int b = 3;
+        String response = calculator.run(ICalculator.operations.ADD, a, b);
+        Assert.assertEquals(String.format("%d + %d = %s", a, b, a + b), response);
+    }
 
     @Test
     public void validateOperations() {
