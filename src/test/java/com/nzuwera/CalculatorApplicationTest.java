@@ -44,6 +44,11 @@ public class CalculatorApplicationTest {
     }
 
     @Test
+    public void contextLoads() {
+        // For testing SpringBootApplication main method
+    }
+
+    @Test
     public void testSuccessCalculator() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
