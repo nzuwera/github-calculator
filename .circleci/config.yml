@@ -39,5 +39,6 @@ jobs:
 
       # run tests!
       - run: mvn integration-test
-      # Deployment
-      - run: curl --data build=true -X POST  https://cloud.docker.com/api/build/v1/source/c49904b2-e7a9-4e01-9501-c5afb52a529e/trigger/a87c565c-ebb0-47c3-8a2a-2ae48433a00b/call/
+      # Build docker image
+      - run: dockerfile:build
+      - run: dockerfile:push
