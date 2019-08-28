@@ -39,7 +39,24 @@ jobs:
 
       # run tests!
       - run: mvn integration-test
-      # Build docker image
-      - run: mvn dockerfile:build
-      - run: mvn dockerfile:push
+
+      # run docker native commands
+      - setup_remote_docker:
+          docker_layer_caching: true
+            # use a primary image that already has Docker (recommended)
+            # or install it during a build like we do here
+      - run:
+          name: Install Docker client
+          command: |
+            set -x
+            VER="17.03.0-ce"
+            curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
+            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+            mv /tmp/docker/* /usr/bin
+      # build and push Docker image
+      - run: |
+          TAG=1.0.$CIRCLE_BUILD_NUM
+          docker build -t   $DOCKER_HUB_REPO/$APP_NAME:$TAG .
+          docker login -u $DOCKER_USER -p $DOCKER_PASS         # (4)
+          docker push $DOCKER_HUB_REPO/$APP_NAME:$TAG
       #- run:  curl --data build=true -X POST https://cloud.docker.com/api/build/v1/source/fd09a08a-3433-42a5-b47c-07cdefce55d6/trigger/82efd0d5-0923-4147-89b2-d377030fe907/call/

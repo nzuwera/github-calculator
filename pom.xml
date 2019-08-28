@@ -42,7 +42,7 @@
     <build>
         <plugins>
             <!-- unpacking application jar file && deployment of docker image -->
-            <!--<plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
@@ -62,16 +62,8 @@
                             </artifactItems>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>default</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>build</goal>
-                            <goal>push</goal>
-                        </goals>
-                    </execution>
                 </executions>
-            </plugin>-->
+            </plugin>
             <!-- Generating Documentation using Spring Restdocs-->
             <plugin>
                 <groupId>org.asciidoctor</groupId>
@@ -134,7 +126,7 @@
                 </configuration>
             </plugin>
             <!-- This is for building docker images -->
-            <plugin>
+            <!--<plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <version>1.4.9</version>
@@ -154,7 +146,7 @@
                         <jar_file>${project.build.directory}/${project.build.finalName}-${project.version}.jar</jar_file>
                     </buildArgs>
                 </configuration>
-            </plugin>
+            </plugin> -->
         </plugins>
     </build>
 </project>
