@@ -40,5 +40,5 @@ jobs:
       # run tests!
       - run: mvn integration-test
       # Build docker image
-      - run: dockerfile:build
-      - run: dockerfile:push
+      - run: mvn dockerfile:build
+      - run: mvn dockerfile:push
