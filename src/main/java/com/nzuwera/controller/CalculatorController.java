@@ -15,11 +15,6 @@ public class CalculatorController {
 
     @GetMapping(value = "/{operation}/{a}/{b}")
     public String calculate(@PathVariable String operation, @PathVariable int a, @PathVariable int b) {
-        try {
-            return calculator.run(ICalculator.operations.valueOf(operation.toUpperCase()), a, b);
-        } catch (Exception ex) {
-
-            return ex.getMessage();
-        }
+        return calculator.run(operation, a, b);
     }
 }

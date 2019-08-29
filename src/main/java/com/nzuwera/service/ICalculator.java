@@ -5,8 +5,13 @@ public interface ICalculator {
         ADD,
         SUBSTRACT,
         MULTIPLY,
-        DIVIDE
+        DIVIDE,
+        UNKNOWN
     }
 
-    String run(operations operations, int a,  int b);
+    String run(String operation, int a, int b);
+
+    boolean isOperation(String ops);
+
+    operations getOperation(String operation);
 }
