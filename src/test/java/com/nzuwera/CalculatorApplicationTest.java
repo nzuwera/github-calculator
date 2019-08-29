@@ -70,10 +70,9 @@ public class CalculatorApplicationTest {
 
     @Test
     public void testFailCalculator() throws Exception {
-        String ops = "asdfaasdfasd";
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/calculator/" + ops + "/1/2"))
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/calculator/" + wrongOperation + "/1/2"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("No enum constant com.nzuwera.service.ICalculator.operations." + ops.toUpperCase()))
+                .andExpect(content().string("No enum constant com.nzuwera.service.ICalculator.operations." + wrongOperation.toUpperCase()))
                 .andExpect(content().contentType("text/plain;charset=UTF-8"));
     }
 
@@ -103,7 +102,8 @@ public class CalculatorApplicationTest {
 
     @Test(expected = Exception.class)
     public void testSuccessCalculatorUnknownOperator() {
-        calculator.run(ICalculator.operations.valueOf(wrongOperation.toUpperCase()), a, b);
+        String response = calculator.run(ICalculator.operations.valueOf(wrongOperation.toUpperCase()), a, b);
+        Assert.assertEquals("No enum constant com.nzuwera.service.ICalculator.operations." + wrongOperation.toUpperCase(), response);
     }
 
     @Test
@@ -112,13 +112,6 @@ public class CalculatorApplicationTest {
         Assert.assertEquals("SUBSTRACT", ICalculator.operations.SUBSTRACT.name());
         Assert.assertEquals("MULTIPLY", ICalculator.operations.MULTIPLY.name());
         Assert.assertEquals("DIVIDE", ICalculator.operations.DIVIDE.name());
-    }
-
-    @Test
-    public void throwsExceptionWhenNegativeNumbersAreGiven() {
-        thrown.expect(Exception.class);
-        thrown.expectMessage("No enum constant com.nzuwera.service.ICalculator.operations." + wrongOperation.toUpperCase());
-        calculator.run(ICalculator.operations.valueOf(wrongOperation.toUpperCase()), a, b);
     }
 
     @Before
