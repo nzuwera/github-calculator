@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,20 +16,29 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.junit.Assert.fail;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = CalculatorApplication.class)
+@SpringBootTest
 public class CalculatorApplicationTest {
+
+    private int a = 0;
+    private int b = 0;
+    private String wrongOperation = null;
 
     @Rule
     public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation("target/generated-snippets");
 
     @Autowired
     ICalculator calculator;
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
 
     @Autowired
     private WebApplicationContext context;
@@ -69,42 +79,31 @@ public class CalculatorApplicationTest {
 
     @Test
     public void testSuccessCalculatorAdditionService() {
-        int a = 6;
-        int b = 3;
         String response = calculator.run(ICalculator.operations.ADD, a, b);
         Assert.assertEquals(String.format("%d + %d = %s", a, b, a + b), response);
     }
 
     @Test
     public void testSuccessCalculatorSubstractionService() {
-        int a = 6;
-        int b = 3;
         String response = calculator.run(ICalculator.operations.SUBSTRACT, a, b);
         Assert.assertEquals(String.format("%d - %d = %s", a, b, a - b), response);
     }
 
     @Test
     public void testSuccessCalculatorDivisionService() {
-        int a = 6;
-        int b = 3;
         String response = calculator.run(ICalculator.operations.DIVIDE, a, b);
         Assert.assertEquals(String.format("%d / %d = %s", a, b, a / b), response);
     }
 
     @Test
     public void testSuccessCalculatorMultiplicationService() {
-        int a = 6;
-        int b = 3;
         String response = calculator.run(ICalculator.operations.MULTIPLY, a, b);
         Assert.assertEquals(String.format("%d * %d = %s", a, b, a * b), response);
     }
 
     @Test(expected = Exception.class)
     public void testSuccessCalculatorUnknownOperator() {
-        int a = 6;
-        int b = 3;
-        String operator = "ADDED";
-        calculator.run(ICalculator.operations.valueOf(operator.toUpperCase()), a, b);
+        calculator.run(ICalculator.operations.valueOf(wrongOperation.toUpperCase()), a, b);
     }
 
     @Test
@@ -113,6 +112,20 @@ public class CalculatorApplicationTest {
         Assert.assertEquals("SUBSTRACT", ICalculator.operations.SUBSTRACT.name());
         Assert.assertEquals("MULTIPLY", ICalculator.operations.MULTIPLY.name());
         Assert.assertEquals("DIVIDE", ICalculator.operations.DIVIDE.name());
+    }
+
+    @Test
+    public void throwsExceptionWhenNegativeNumbersAreGiven() {
+        thrown.expect(Exception.class);
+        thrown.expectMessage("No enum constant com.nzuwera.service.ICalculator.operations." + wrongOperation.toUpperCase());
+        calculator.run(ICalculator.operations.valueOf(wrongOperation.toUpperCase()), a, b);
+    }
+
+    @Before
+    public void init(){
+        a = 6;
+        b = 3;
+        wrongOperation = "ADDED";
     }
 
 }
