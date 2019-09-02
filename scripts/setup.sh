@@ -24,9 +24,10 @@ chmod u+x $APP_DIR/github-calculator-1.0.jar
 
 cp $HOME_DIR/github-calculator/scripts/calculator.service /etc/systemd/system/calculator.service
 cp $HOME_DIR/github-calculator/scripts/scripts/calculator.sh $APP_DIR
+chmod u+x $APP_DIR/calculator.sh
+
 systemctl daemon-reload
 systemctl enable calculator.service
-
 
 sudo systemctl start calculator
 sudo systemctl status calculator
