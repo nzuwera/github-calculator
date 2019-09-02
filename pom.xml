@@ -42,6 +42,10 @@
     </dependencies>
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
             <!-- unpacking application jar file && deployment of docker image -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
