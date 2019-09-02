@@ -4,16 +4,21 @@ Spring Rest Docs tutorial
 
 ## Dependency installation
 
-`$ sudo apt-get install -y default-jdk`
-`$ sudo apt-get install -y maven`
+```sh 
+$ sudo apt-get install -y default-jdk
+$ sudo apt-get install -y maven
+```
 
 ## Get application application
-`$ git clone https://github.com/nzuwera/github-calculator.git`
+```sh
+$ git clone https://github.com/nzuwera/github-calculator.git
+```
 
 ## Building the application
-`$ cd github-calculator`
-`$ mvn clean package`
-`$ sudo mkdir -p /opt/apps/calculator`
-`$ sudo chown -R $USER:$USER /opt/apps/calculator`
-`$ mv target/github-calculator.jar /opt/apps/calculator/github-calculator.jar`
-
+```sh 
+$ cd github-calculator
+$ mvn clean package
+$ sudo mkdir -p /opt/apps/calculator
+$ sudo chown -R $USER:$USER /opt/apps/calculator
+$ mv target/github-calculator.jar /opt/apps/calculator/github-calculator.jar
+```
