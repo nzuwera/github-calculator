@@ -33,7 +33,7 @@ $ java -jar github-calculator.jar
 ## Install the application as a service
 ```sh
 $ cd ~/github-calculator
-$ sudo cat scripts/calculator.service > /etc/systemd/system/calculator.service
+$ sudo cp scripts/calculator.service /etc/systemd/system/calculator.service
 $ cp scripts/calculator.sh /opt/apps/calculator/
 $ sudo systemctl daemon-reload
 $ sudo systemctl enable calculator.service
