@@ -37,6 +37,10 @@ $ sudo cat scripts/calculator.service > /etc/systemd/system/calculator.service
 $ cp scripts/calculator.sh /opt/apps/calculator/
 $ sudo systemctl daemon-reload
 $ sudo systemctl enable calculator.service
+```
+
+## Start the application
+```sh
 $ sudo systemctl start calculator
 $ sudo systemctl status calculator
 ```
