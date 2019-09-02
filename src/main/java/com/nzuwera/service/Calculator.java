@@ -60,7 +60,7 @@ public class Calculator implements ICalculator {
      */
     @Override
     public operations getOperation(String operation) {
-        if (isOperation(operation)) {
+        if (isOperation(operation.toUpperCase())) {
             return operations.valueOf(operation);
         } else {
             return operations.UNKNOWN;
