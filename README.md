@@ -22,3 +22,17 @@ $ sudo mkdir -p /opt/apps/calculator
 $ sudo chown -R $USER:$USER /opt/apps/calculator
 $ mv target/github-calculator.jar /opt/apps/calculator/github-calculator.jar
 ```
+
+## Usage 
+### Request
+```sh
+curl 'http://localhost:8080/calculator/ADD/1/1' -i -X GET 
+```
+### Response
+```http
+HTTP/1.1 200 OK
+Content-Type: text/plain;charset=UTF-8
+Content-Length: 9
+
+1 + 1 = 2
+```
