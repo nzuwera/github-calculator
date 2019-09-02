@@ -20,14 +20,14 @@ $ cd github-calculator
 $ mvn clean package
 $ sudo mkdir -p /opt/apps/calculator
 $ sudo chown -R $USER:$USER /opt/apps/calculator
-$ mv target/github-calculator.jar /opt/apps/calculator/github-calculator.jar
-$ sudo chmod u+x /opt/apps/calculator/github-calculator.jar
+$ cp target/github-calculator-1.0.jar /opt/apps/calculator/github-calculator-1.0.jar
+$ sudo chmod u+x /opt/apps/calculator/github-calculator-1.0.jar
 ```
 
 ## Test the application
 ```sh
 $ cd /opt/apps/calculator
-$ java -jar github-calculator.jar
+$ java -jar github-calculator-1.0.jar
 ```
 
 ## Install the application as a service

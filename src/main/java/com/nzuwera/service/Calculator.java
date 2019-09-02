@@ -44,8 +44,9 @@ public class Calculator implements ICalculator {
      */
     @Override
     public boolean isOperation(String ops) {
+        String operand = ops.toUpperCase();
         for (operations operation : ICalculator.operations.values()) {
-            if (operation.name().equals(ops)) {
+            if (operation.name().equals(operand)) {
                 return true;
             }
         }
@@ -60,7 +61,7 @@ public class Calculator implements ICalculator {
      */
     @Override
     public operations getOperation(String operation) {
-        if (isOperation(operation.toUpperCase())) {
+        if (isOperation(operation)) {
             return operations.valueOf(operation);
         } else {
             return operations.UNKNOWN;
