@@ -61,7 +61,7 @@ public class CalculatorApplicationTest {
     public void testSuccessCalculator() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .get("/calculator/ADD/1/1"))
+                        .get("/calculator/A/1/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("text/plain;charset=UTF-8"))
                 .andDo(document("{ClassName}/{methodName}"));
@@ -77,25 +77,25 @@ public class CalculatorApplicationTest {
 
     @Test
     public void testSuccessCalculatorAdditionService() {
-        String response = calculator.run("ADD", a, b);
+        String response = calculator.run("A", a, b);
         Assert.assertEquals(String.format("%d + %d = %s", a, b, a + b), response);
     }
 
     @Test
     public void testSuccessCalculatorSubstractionService() {
-        String response = calculator.run("SUBSTRACT", a, b);
+        String response = calculator.run("S", a, b);
         Assert.assertEquals(String.format("%d - %d = %s", a, b, a - b), response);
     }
 
     @Test
     public void testSuccessCalculatorDivisionService() {
-        String response = calculator.run("DIVIDE", a, b);
+        String response = calculator.run("D", a, b);
         Assert.assertEquals(String.format("%d / %d = %s", a, b, a / b), response);
     }
 
     @Test
     public void testSuccessCalculatorMultiplicationService() {
-        String response = calculator.run("MULTIPLY", a, b);
+        String response = calculator.run("M", a, b);
         Assert.assertEquals(String.format("%d * %d = %s", a, b, a * b), response);
     }
 
@@ -107,11 +107,11 @@ public class CalculatorApplicationTest {
 
     @Test
     public void validateOperations() {
-        Assert.assertEquals("ADD", ICalculator.operations.ADD.name());
-        Assert.assertEquals("SUBSTRACT", ICalculator.operations.SUBSTRACT.name());
-        Assert.assertEquals("MULTIPLY", ICalculator.operations.MULTIPLY.name());
-        Assert.assertEquals("DIVIDE", ICalculator.operations.DIVIDE.name());
-        Assert.assertEquals("UNKNOWN", ICalculator.operations.UNKNOWN.name());
+        Assert.assertEquals("A", ICalculator.operations.A.name());
+        Assert.assertEquals("S", ICalculator.operations.S.name());
+        Assert.assertEquals("M", ICalculator.operations.M.name());
+        Assert.assertEquals("D", ICalculator.operations.D.name());
+        Assert.assertEquals("U", ICalculator.operations.U.name());
     }
 
     @Before

@@ -2,11 +2,11 @@ package com.nzuwera.service;
 
 public interface ICalculator {
     enum operations {
-        ADD,
-        SUBSTRACT,
-        MULTIPLY,
-        DIVIDE,
-        UNKNOWN
+        A,
+        S,
+        M,
+        D,
+        U
     }
 
     String run(String operation, int a, int b);

@@ -50,17 +50,17 @@ This Endpoint support the follow arithmetic operations:
 
 | Operation | Supported Values |
 | --------- | --------------- |
-| Addition | ADD or add |
-| Substration | SUBSTRACT or substract |
-| Multiplication | MULTIPLY or multiply |
-| Division | DIVIDE or divide |
+| Addition | A |
+| Substration | S |
+| Multiplication | M |
+| Division | D |
 
 ### Request
 
 The request for is build as follow:
-> http://<HOST>:8080/{operation}/{numberA}/{numberB}
+> http://{HOSTNAME_OR_IP}:8080/{operand}/{numberA}/{numberB}
 ```sh
-curl 'http://localhost:8080/calculator/ADD/1/1' -i -X GET 
+curl 'http://localhost:8080/calculator/A/1/1' -i -X GET 
 ```
 ### Response
 ```http

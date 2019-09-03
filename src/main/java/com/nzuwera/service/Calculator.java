@@ -18,16 +18,16 @@ public class Calculator implements ICalculator {
         String response;
         operations operations = getOperation(ops);
         switch (operations) {
-            case ADD:
+            case A:
                 response = a + " + " + b + " = " + (a + b);
                 break;
-            case SUBSTRACT:
+            case S:
                 response = a + " - " + b + " = " + (a - b);
                 break;
-            case MULTIPLY:
+            case M:
                 response = a + " * " + b + " = " + (a * b);
                 break;
-            case DIVIDE:
+            case D:
                 response = a + " / " + b + " = " + (a / b);
                 break;
             default:
@@ -54,7 +54,7 @@ public class Calculator implements ICalculator {
     }
 
     /**
-     * Get Correct operand from given string and set UNKNOWN for invalid operand
+     * Get Correct operand from given string and set U for invalid operand
      *
      * @param operation operand string
      * @return operations enum
@@ -64,7 +64,7 @@ public class Calculator implements ICalculator {
         if (isOperation(operation)) {
             return operations.valueOf(operation);
         } else {
-            return operations.UNKNOWN;
+            return operations.U;
         }
     }
 }
