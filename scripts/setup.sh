@@ -19,18 +19,18 @@ mvn clean package
 mkdir -p $APP_DIR
 
 cp target/github-calculator-1.0.jar $APP_DIR/github-calculator-1.0.jar
-chmod u+x $APP_DIR/github-calculator-1.0.jar
+chmod 0700 $APP_DIR/github-calculator-1.0.jar
 
 
 cp $HOME_DIR/github-calculator/scripts/calculator.service /etc/systemd/system/calculator.service
 cp $HOME_DIR/github-calculator/scripts/scripts/calculator.sh $APP_DIR
 
-chown -R $USER:$USER $APP_DIR
+chown -R ubuntu:ubuntu $APP_DIR
 
-chmod u+x $APP_DIR/calculator.sh
+chmod 0700 $APP_DIR/calculator.sh
 
 systemctl daemon-reload
 systemctl enable calculator.service
 
-sudo systemctl start calculator
-sudo systemctl status calculator
+systemctl start calculator
+systemctl status calculator
