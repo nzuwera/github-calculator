@@ -23,7 +23,7 @@ chmod 0700 $APP_DIR/github-calculator-1.0.jar
 
 
 cp $HOME_DIR/github-calculator/scripts/calculator.service /etc/systemd/system/calculator.service
-cp $HOME_DIR/github-calculator/scripts/scripts/calculator.sh $APP_DIR
+cp $HOME_DIR/github-calculator/scripts/calculator.sh $APP_DIR
 
 chown -R ubuntu:ubuntu $APP_DIR
 
