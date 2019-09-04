@@ -5,8 +5,8 @@ Spring Rest Docs tutorial
 ## Dependency installation
 
 ```sh 
-$ sudo apt-get install -y default-jdk
-$ sudo apt-get install -y maven
+$ apt-get install -y default-jdk
+$ apt-get install -y maven
 ```
 
 ## Get application application
@@ -18,10 +18,10 @@ $ git clone https://github.com/nzuwera/github-calculator.git
 ```sh 
 $ cd github-calculator
 $ mvn clean package
-$ sudo mkdir -p /opt/apps/calculator
-$ sudo chown -R $USER:$USER /opt/apps/calculator
+$ mkdir -p /opt/apps/calculator
+$ chown -R $USER:$USER /opt/apps/calculator
 $ cp target/github-calculator-1.0.jar /opt/apps/calculator/github-calculator-1.0.jar
-$ sudo chmod u+x /opt/apps/calculator/github-calculator-1.0.jar
+$ chmod u+x /opt/apps/calculator/github-calculator-1.0.jar
 ```
 
 ## Test the application
@@ -33,16 +33,16 @@ $ java -jar github-calculator-1.0.jar
 ## Install the application as a service
 ```sh
 $ cd ~/github-calculator
-$ sudo cp scripts/calculator.service /etc/systemd/system/calculator.service
+$ cp scripts/calculator.service /etc/systemd/system/calculator.service
 $ cp scripts/calculator.sh /opt/apps/calculator/
-$ sudo systemctl daemon-reload
-$ sudo systemctl enable calculator.service
+$ systemctl daemon-reload
+$ systemctl enable calculator.service
 ```
 
 ## Start the application
 ```sh
-$ sudo systemctl start calculator
-$ sudo systemctl status calculator
+$ systemctl start calculator
+$ systemctl status calculator
 ```
 
 ## Usage 
