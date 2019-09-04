@@ -114,6 +114,14 @@ public class CalculatorApplicationTest {
         Assert.assertEquals("U", ICalculator.operations.U.name());
     }
 
+    @Test
+    public void testHomePage() throws Exception {
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .get("/"))
+                .andExpect(status().isOk());
+    }
+
     @Before
     public void init() {
         a = 6;
