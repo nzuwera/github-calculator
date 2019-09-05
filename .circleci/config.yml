@@ -39,9 +39,6 @@ jobs:
   tests_coverage_linting:
     docker:
       - image: circleci/openjdk:8-jdk
-    working_directory: ~/repo
-    environment:
-      MAVEN_OPTS: -Xmx3200m
     steps:
       # run tests!
       - run: mvn integration-test
@@ -54,9 +51,6 @@ jobs:
   deploy_dockerhub:
     docker:
       - image: circleci/openjdk:8-jdk
-    working_directory: ~/repo
-    environment:
-      MAVEN_OPTS: -Xmx3200m
     steps:
       # run docker native commands
       - setup_remote_docker:
