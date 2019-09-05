@@ -4,7 +4,7 @@
 #
 version: 2
 jobs:
-  checkout:
+  build:
     docker:
       # specify the version you desire here
       - image: circleci/openjdk:8-jdk
@@ -36,13 +36,7 @@ jobs:
           paths:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
-  tests_coverage_linting:
-    docker:
-      - image: circleci/openjdk:8-jdk
-    working_directory: ~/repo
-    environment:
-      MAVEN_OPTS: -Xmx3200m
-    steps:
+
       # run tests!
       - run: mvn integration-test
 
@@ -51,13 +45,7 @@ jobs:
 
       # Analyse with SonarCloud
       - run: mvn sonar:sonar -Dsonar.projectKey=nzuwera_github-calculator -Dsonar.organization=nzuwera -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=44df6fc9e7d0bbd08e10d6f356fb8db707158868
-  deploy_dockerhub:
-    docker:
-      - image: circleci/openjdk:8-jdk
-    working_directory: ~/repo
-    environment:
-      MAVEN_OPTS: -Xmx3200m
-    steps:
+
       # run docker native commands
       - setup_remote_docker:
           docker_layer_caching: true
@@ -77,15 +65,4 @@ jobs:
           docker build -t   $DOCKER_HUB_REPO/$APP_NAME:$TAG .
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push $DOCKER_HUB_REPO/$APP_NAME:$TAG
-
-workflows:
-        version: 2
-        dockerhub_pipeline:
-                jobs:
-                        - checkout
-                        - tests_coverage_linting:
-                                requires:
-                                - checkout
-                        - deploy_dockerhub:
-                                requires:
-                                - tests_coverage_linting     #- run:  curl --data build=true -X POST https://cloud.docker.com/api/build/v1/source/fd09a08a-3433-42a5-b47c-07cdefce55d6/trigger/82efd0d5-0923-4147-89b2-d377030fe907/call/
+      #- run:  curl --data build=true -X POST https://cloud.docker.com/api/build/v1/source/fd09a08a-3433-42a5-b47c-07cdefce55d6/trigger/82efd0d5-0923-4147-89b2-d377030fe907/call/
