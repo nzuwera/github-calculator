@@ -73,9 +73,6 @@ workflows:
         dockerhub_pipeline:
                 jobs:
                         - checkout
-                        - tests_coverage_linting:
-                                requires:
-                                - checkout
                         - deploy_dockerhub:
                                 requires:
-                                - tests_coverage_linting     #- run:  curl --data build=true -X POST https://cloud.docker.com/api/build/v1/source/fd09a08a-3433-42a5-b47c-07cdefce55d6/trigger/82efd0d5-0923-4147-89b2-d377030fe907/call/
+                                - checkout     #- run:  curl --data build=true -X POST https://cloud.docker.com/api/build/v1/source/fd09a08a-3433-42a5-b47c-07cdefce55d6/trigger/82efd0d5-0923-4147-89b2-d377030fe907/call/
