@@ -1,16 +1,16 @@
 package com.nzuwera;
 
 import com.nzuwera.service.ICalculator;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.restdocs.JUnitRestDocumentation;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -21,7 +21,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class CalculatorApplicationTest {
 
@@ -29,27 +29,28 @@ public class CalculatorApplicationTest {
     private int b = 0;
     private String wrongOperation = null;
 
-    @Rule
-    public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation("target/generated-snippets");
+    @RegisterExtension
+    RestDocumentationExtension restDocumentation = new RestDocumentationExtension("target/generated-snippets");
 
     @Autowired
     ICalculator calculator;
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
 
     @Autowired
     private WebApplicationContext context;
 
     private MockMvc mockMvc;
 
-    @Before
-    public void setup() {
+    @BeforeEach
+    public void setup(RestDocumentationContextProvider restDocumentation) {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
-                .apply(documentationConfiguration(this.restDocumentation))
+                .apply(documentationConfiguration(restDocumentation))
                 .build();
+
+        // Initialize test data
+        a = 6;
+        b = 3;
+        wrongOperation = "ADDED";
     }
 
     @Test
@@ -78,40 +79,40 @@ public class CalculatorApplicationTest {
     @Test
     public void testSuccessCalculatorAdditionService() {
         String response = calculator.run("A", a, b);
-        Assert.assertEquals(String.format("%d + %d = %s", a, b, a + b), response);
+        Assertions.assertEquals(String.format("%d + %d = %s", a, b, a + b), response);
     }
 
     @Test
     public void testSuccessCalculatorSubstractionService() {
         String response = calculator.run("S", a, b);
-        Assert.assertEquals(String.format("%d - %d = %s", a, b, a - b), response);
+        Assertions.assertEquals(String.format("%d - %d = %s", a, b, a - b), response);
     }
 
     @Test
     public void testSuccessCalculatorDivisionService() {
         String response = calculator.run("D", a, b);
-        Assert.assertEquals(String.format("%d / %d = %s", a, b, a / b), response);
+        Assertions.assertEquals(String.format("%d / %d = %s", a, b, a / b), response);
     }
 
     @Test
     public void testSuccessCalculatorMultiplicationService() {
         String response = calculator.run("M", a, b);
-        Assert.assertEquals(String.format("%d * %d = %s", a, b, a * b), response);
+        Assertions.assertEquals(String.format("%d * %d = %s", a, b, a * b), response);
     }
 
     @Test
     public void testSuccessCalculatorUnknownOperator() {
         String response = calculator.run(wrongOperation, a, b);
-        Assert.assertEquals("Unknown Operation", response);
+        Assertions.assertEquals("Unknown Operation", response);
     }
 
     @Test
     public void validateOperations() {
-        Assert.assertEquals("A", ICalculator.operations.A.name());
-        Assert.assertEquals("S", ICalculator.operations.S.name());
-        Assert.assertEquals("M", ICalculator.operations.M.name());
-        Assert.assertEquals("D", ICalculator.operations.D.name());
-        Assert.assertEquals("U", ICalculator.operations.U.name());
+        Assertions.assertEquals("A", ICalculator.operations.A.name());
+        Assertions.assertEquals("S", ICalculator.operations.S.name());
+        Assertions.assertEquals("M", ICalculator.operations.M.name());
+        Assertions.assertEquals("D", ICalculator.operations.D.name());
+        Assertions.assertEquals("U", ICalculator.operations.U.name());
     }
 
     @Test
@@ -120,13 +121,6 @@ public class CalculatorApplicationTest {
                 MockMvcRequestBuilders
                         .get("/"))
                 .andExpect(status().isOk());
-    }
-
-    @Before
-    public void init() {
-        a = 6;
-        b = 3;
-        wrongOperation = "ADDED";
     }
 
 }
