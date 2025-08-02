@@ -1,16 +1,13 @@
-package com.nzuwera;
+package io.github.nzuwera;
 
-import com.nzuwera.service.ICalculator;
+import io.github.nzuwera.service.ICalculator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -20,12 +17,10 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith({SpringExtension.class})
 @SpringBootTest
 public class CalculatorApplicationTest {
 
@@ -34,9 +29,6 @@ public class CalculatorApplicationTest {
     private List<Double> numbers;
     private List<Double> singleNumber;
     private String wrongOperation = null;
-
-    @RegisterExtension
-    RestDocumentationExtension restDocumentation = new RestDocumentationExtension("target/generated-snippets");
 
     @Autowired
     ICalculator calculator;
@@ -47,10 +39,9 @@ public class CalculatorApplicationTest {
     private MockMvc mockMvc;
 
     @BeforeEach
-    public void setup(RestDocumentationContextProvider restDocumentation) {
+    public void setup() {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
-                .apply(documentationConfiguration(restDocumentation))
                 .build();
 
         // Initialize test data
@@ -58,7 +49,7 @@ public class CalculatorApplicationTest {
         b = 3.0;
         numbers = Arrays.asList(a, b);
         singleNumber = List.of(5.0);
-        wrongOperation = "ADDED";
+        wrongOperation = "XXX";
     }
 
     @Test
@@ -70,10 +61,10 @@ public class CalculatorApplicationTest {
     public void testSuccessCalculator() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .get("/calculator/A/1/1"))
+                        .get("/calculator/ADD/1/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("text/plain;charset=UTF-8"))
-                .andDo(document("{ClassName}/{methodName}"));
+                ;
     }
 
     @Test
@@ -82,12 +73,11 @@ public class CalculatorApplicationTest {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .post("/calculator/A")
+                        .post("/calculator/ADD")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType("text/plain;charset=UTF-8"))
-                .andDo(document("{ClassName}/{methodName}"));
+                .andExpect(content().contentType("text/plain;charset=UTF-8"));
     }
 
     @Test
@@ -96,7 +86,7 @@ public class CalculatorApplicationTest {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .post("/calculator/A")
+                        .post("/calculator/ADD")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonContent))
                 .andExpect(status().isOk())
@@ -128,25 +118,25 @@ public class CalculatorApplicationTest {
 
     @Test
     public void testSuccessCalculatorAdditionService() {
-        String response = calculator.run("A", numbers);
+        String response = calculator.run("Add", numbers);
         Assertions.assertEquals(a + " " + b + " = " + (a + b), response);
     }
 
     @Test
     public void testSuccessCalculatorSubstractionService() {
-        String response = calculator.run("S", numbers);
+        String response = calculator.run("Subtract", numbers);
         Assertions.assertEquals(a + " " + b + " = " + (a - b), response);
     }
 
     @Test
     public void testSuccessCalculatorDivisionService() {
-        String response = calculator.run("D", numbers);
+        String response = calculator.run("Divide", numbers);
         Assertions.assertEquals(a + " " + b + " = " + (a / b), response);
     }
 
     @Test
     public void testSuccessCalculatorMultiplicationService() {
-        String response = calculator.run("M", numbers);
+        String response = calculator.run("Multiply", numbers);
         Assertions.assertEquals(a + " " + b + " = " + (a * b), response);
     }
 
@@ -158,29 +148,29 @@ public class CalculatorApplicationTest {
 
     @Test
     public void testEmptyList() {
-        String response = calculator.run("A", List.of());
+        String response = calculator.run("Add", List.of());
         Assertions.assertEquals("No numbers provided", response);
     }
 
     @Test
     public void testDivisionByZero() {
-        String response = calculator.run("D", Arrays.asList(10.0, 0.0));
+        String response = calculator.run("Divide", Arrays.asList(10.0, 0.0));
         Assertions.assertEquals("Cannot divide by zero", response);
     }
 
     @Test
     public void testSingleNumberDivision() {
-        String response = calculator.run("D", singleNumber);
+        String response = calculator.run("Divide", singleNumber);
         Assertions.assertEquals("At least two numbers are required for division", response);
     }
 
     @Test
     public void validateOperations() {
-        Assertions.assertEquals("A", ICalculator.operations.A.name());
-        Assertions.assertEquals("S", ICalculator.operations.S.name());
-        Assertions.assertEquals("M", ICalculator.operations.M.name());
-        Assertions.assertEquals("D", ICalculator.operations.D.name());
-        Assertions.assertEquals("U", ICalculator.operations.U.name());
+        Assertions.assertEquals("Add".toUpperCase(), ICalculator.operations.ADD.name());
+        Assertions.assertEquals("Subtract".toUpperCase(), ICalculator.operations.SUBTRACT.name());
+        Assertions.assertEquals("Multiply".toUpperCase(), ICalculator.operations.MULTIPLY.name());
+        Assertions.assertEquals("Divide".toUpperCase(), ICalculator.operations.DIVIDE.name());
+        Assertions.assertEquals("Unknown".toUpperCase(), ICalculator.operations.UNKNOWN.name());
     }
 
     @Test

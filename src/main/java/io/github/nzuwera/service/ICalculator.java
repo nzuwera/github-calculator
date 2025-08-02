@@ -1,14 +1,14 @@
-package com.nzuwera.service;
+package io.github.nzuwera.service;
 
 import java.util.List;
 
 public interface ICalculator {
     enum operations {
-        A,
-        S,
-        M,
-        D,
-        U
+        ADD,
+        SUBTRACT,
+        MULTIPLY,
+        DIVIDE,
+        UNKNOWN
     }
 
     String run(String operation, List<Double> numbers);

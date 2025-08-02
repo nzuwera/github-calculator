@@ -1,6 +1,6 @@
-package com.nzuwera.controller;
+package io.github.nzuwera.controller;
 
-import com.nzuwera.service.ICalculator;
+import io.github.nzuwera.service.ICalculator;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

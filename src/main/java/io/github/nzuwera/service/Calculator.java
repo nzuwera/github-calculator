@@ -1,4 +1,4 @@
-package com.nzuwera.service;
+package io.github.nzuwera.service;
 
 import org.springframework.stereotype.Service;
 
@@ -26,39 +26,35 @@ public class Calculator implements ICalculator {
                 .collect(Collectors.joining(" "));
 
         String response;
-        operations operations = getOperation(ops);
+        operations operations = getOperation(ops.toUpperCase());
 
         switch (operations) {
-            case A:
+            case ADD:
                 double sum = numbers.stream().mapToDouble(Double::doubleValue).sum();
-                response = numbersStr + " = " + sum;
+                response = String.format("%s = %s", numbersStr, sum);
                 break;
-            case S:
+            case SUBTRACT:
+                if (numbers.isEmpty()) {
+                    return "At least one number is required for subtraction";
+                }
                 double difference = numbers.getFirst();
-                for (int i = 1; i < numbers.size(); i++) {
-                    difference -= numbers.get(i);
-                }
-                response = numbersStr + " = " + difference;
+                difference -= numbers.stream().skip(1).mapToDouble(Double::doubleValue).sum();
+                response = String.format("%s = %s", numbersStr, difference);
                 break;
-            case M:
-                double product = 1.0;
-                for (Double number : numbers) {
-                    product *= number;
-                }
-                response = numbersStr + " = " + product;
+            case MULTIPLY:
+                double product = numbers.stream().reduce(1.0, (a, b) -> a * b);
+                response = String.format("%s = %s", numbersStr, product);
                 break;
-            case D:
+            case DIVIDE:
                 if (numbers.size() < 2) {
                     return "At least two numbers are required for division";
                 }
-                double quotient = numbers.getFirst();
-                for (int i = 1; i < numbers.size(); i++) {
-                    if (numbers.get(i) == 0) {
-                        return "Cannot divide by zero";
-                    }
-                    quotient /= numbers.get(i);
+                if (numbers.stream().skip(1).anyMatch(n -> n == 0)) {
+                    return "Cannot divide by zero";
                 }
-                response = numbersStr + " = " + quotient;
+                double quotient = numbers.stream().skip(1)
+                        .reduce(numbers.getFirst(), (a, b) -> a / b);
+                response = String.format("%s = %s", numbersStr, quotient);
                 break;
             default:
                 response = "Unknown Operation";
@@ -74,13 +70,12 @@ public class Calculator implements ICalculator {
      */
     @Override
     public boolean isOperation(String ops) {
-        String operand = ops.toUpperCase();
-        for (operations operation : ICalculator.operations.values()) {
-            if (operation.name().equals(operand)) {
-                return true;
-            }
+        try {
+            ICalculator.operations.valueOf(ops);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
         }
-        return false;
     }
 
     /**
@@ -94,7 +89,7 @@ public class Calculator implements ICalculator {
         if (isOperation(operation)) {
             return operations.valueOf(operation);
         } else {
-            return operations.U;
+            return operations.UNKNOWN;
         }
     }
 }
