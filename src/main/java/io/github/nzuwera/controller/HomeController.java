@@ -1,4 +1,4 @@
-package com.nzuwera.controller;
+package io.github.nzuwera.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
