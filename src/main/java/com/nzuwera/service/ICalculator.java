@@ -1,5 +1,7 @@
 package com.nzuwera.service;
 
+import java.util.List;
+
 public interface ICalculator {
     enum operations {
         A,
@@ -9,7 +11,7 @@ public interface ICalculator {
         U
     }
 
-    String run(String operation, int a, int b);
+    String run(String operation, List<Double> numbers);
 
     boolean isOperation(String ops);
 

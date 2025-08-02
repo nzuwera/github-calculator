@@ -1,10 +1,9 @@
 package com.nzuwera.controller;
 
 import com.nzuwera.service.ICalculator;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/calculator")
@@ -15,8 +14,24 @@ public class CalculatorController {
         this.calculator = calculator;
     }
 
+    /**
+     * Perform an arithmetic operation on a list of numbers
+     * 
+     * @param operation the operation to perform (A: addition, S: subtraction, M: multiplication, D: division)
+     * @param numbers the list of numbers to operate on
+     * @return the result of the operation as a formatted string
+     */
+    @PostMapping(value = "/{operation}")
+    public String calculate(@PathVariable String operation, @RequestBody List<Double> numbers) {
+        return calculator.run(operation, numbers);
+    }
+
+    /**
+     * Legacy endpoint for backward compatibility
+     * Converts the two integers to a list and calls the new service
+     */
     @GetMapping(value = "/{operation}/{a}/{b}")
-    public String calculate(@PathVariable String operation, @PathVariable int a, @PathVariable int b) {
-        return calculator.run(operation, a, b);
+    public String calculateLegacy(@PathVariable String operation, @PathVariable double a, @PathVariable double b) {
+        return calculator.run(operation, List.of(a, b));
     }
 }
