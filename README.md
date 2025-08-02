@@ -1,72 +1,114 @@
 [![Build and Deploy](https://github.com/nzuwera/github-calculator/actions/workflows/build.yml/badge.svg)](https://github.com/nzuwera/github-calculator/actions/workflows/build.yml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nzuwera_github-calculator&metric=alert_status)](https://sonarcloud.io/dashboard?id=nzuwera_github-calculator)
-# calculator
-Spring Rest Docs tutorial
+# Calculator REST API
 
-## Dependency installation
+A simple calculator REST API built with Spring Boot that supports basic arithmetic operations.
 
-```sh 
-$ apt-get install -y default-jdk
-$ apt-get install -y maven
-```
+## Technologies Used
 
-## Get application application
+- Java 21
+- Spring Boot 3.5.4
+- Thymeleaf for web UI
+- OpenAPI/Swagger for API documentation
+- Docker for containerization
+- JUnit 5 for testing
+- Maven for build management
+
+## Prerequisites
+
+- Java 21 or higher
+- Maven 3.6 or higher
+- Docker (optional, for containerization)
+
+## Getting Started
+
+### Clone the repository
 ```sh
-$ git clone https://github.com/nzuwera/github-calculator.git
+git clone https://github.com/nzuwera/github-calculator.git
+cd github-calculator
 ```
 
-## Building the application
-```sh 
-$ cd github-calculator
-$ mvn clean package
-$ mkdir -p /opt/apps/calculator
-$ chown -R $USER:$USER /opt/apps/calculator
-$ cp target/github-calculator-1.0.jar /opt/apps/calculator/github-calculator-1.0.jar
-$ chmod u+x /opt/apps/calculator/github-calculator-1.0.jar
-```
-
-## Test the application
+### Build the application
 ```sh
-$ cd /opt/apps/calculator
-$ java -jar github-calculator-1.0.jar
+mvn clean package
 ```
 
-## Install the application as a service
+### Run the application
 ```sh
-$ cd ~/github-calculator
-$ cp scripts/calculator.service /etc/systemd/system/calculator.service
-$ cp scripts/calculator.sh /opt/apps/calculator/
-$ systemctl daemon-reload
-$ systemctl enable calculator.service
+java -jar target/github-calculator-1.0.jar
 ```
 
-## Start the application
+The application will start on port 8080. You can access:
+- Web UI: http://localhost:8080/
+- API Documentation: http://localhost:8080/swagger-ui/index.html
+
+## Docker Support
+
+### Build Docker image
 ```sh
-$ systemctl start calculator
-$ systemctl status calculator
+mvn spring-boot:build-image -Dspring-boot.build-image.imageName=nzuwera/github-calculator
 ```
 
-## Usage 
-This Endpoint support the follow arithmetic operations:
+### Run Docker container
+```sh
+docker run -p 8080:8080 nzuwera/github-calculator
+```
+
+## API Usage
+
+The calculator supports the following arithmetic operations:
 
 | Operation | Supported Values |
-| --------- | --------------- |
-| Addition | A |
-| Substration | S |
-| Multiplication | M |
-| Division | D |
+| --------- | ------ |
+| Addition | ADD |
+| Subtraction | SUBTRACT |
+| Multiplication | MULTIPLY |
+| Division | DIVIDE |
 
-### Request
+### REST Endpoints
 
-The request for is build as follow:
-> http://{HOSTNAME_OR_IP}:8080/{operand}/{numberA}/{numberB}
-```sh
-curl 'http://localhost:8080/calculator/A/1/1' -i -X GET 
+#### 1. Modern API (Recommended)
 ```
-### Response
-```http
+POST /calculator/{operation}
+```
+
+Example:
+```sh
+curl -X POST 'http://localhost:8080/calculator/ADD' \
+  -H 'Content-Type: application/json' \
+  -d '[1, 2, 3, 4]'
+```
+
+Response:
+```
+1 2 3 4 = 10
+```
+
+#### 2. Legacy API (For backward compatibility)
+```
+GET /calculator/{operation}/{a}/{b}
+```
+
+Example:
+```sh
+curl 'http://localhost:8080/calculator/A/5/3' -i -X GET
+```
+
+Response:
+```
 HTTP/1.1 200 OK
 Content-Type: text/plain;charset=UTF-8
 Content-Length: 9
 
-1 + 1 = 2
+5 3 = 8
 ```
+
+## Testing
+
+Run the tests with:
+```sh
+mvn test
+```
+
+## License
+
+This project is licensed under the MIT License.
